@@ -55,7 +55,7 @@ public class mult_unit_CA {
         players[0].setbid(63);
         players[0].setbundle("1,0,2,1,0");
         players[1] = new Bidder("P2");
-        players[1].setbid(54);
+        players[1].setbid(90);
         players[1].setbundle("2,1,1,0,0");
         players[2] = new Bidder("P3");
         players[2].setbid(93);
@@ -64,7 +64,7 @@ public class mult_unit_CA {
         players[3].setbid(70);
         players[3].setbundle("0,0,0,2,1");
         players[4] = new Bidder("P5");
-        players[4].setbid(28);
+        players[4].setbid(50);
         players[4].setbundle("1,0,1,0,0");
 
 //        for(Bidder player : players) {
@@ -107,20 +107,27 @@ public class mult_unit_CA {
                     for(int q=0;q<type_num;q++)
                         temp[q] = String.valueOf(Integer.parseInt(temp[q]) - Integer.parseInt(players[i].getbundle()[q]));
                     for (int q = i + 1; q < players.length; q++)
-                        if (players[q].getchecked() && !Bidder.disjointSet(players[q].getbundle(), temp)) {
-                            if (flag) {
+                        if (players[q].getchecked() == -1 && !Bidder.disjointSet(players[q].getbundle(), temp)) {
 
+                            if (flag) {
                                 players[i].setcritical(players[q].getbidPerNum() * players[i].gettype());
-                                players[q].setchecked();
+                                players[q].setchecked(i);
+                                //System.out.println(players[q].getname() + " : " + players[i].getname());
+                                players[i].set = true;
                                 flag = false;
-                            } else {
-                                players[q].setchecked();
+                            } else if(players[q].getchecked() == -1){
+                                players[q].setchecked(i);
                             }
                         }
                 }
                 else{
-                    if(!Bidder.disjointSet(players[i].getbundle(),temp) && flag){
-                        players[i].setcritical(winner.get(j).getbidPerNum()*players[i].gettype());
+
+                    if(!Bidder.disjointSet(players[i].getbundle(),temp) && flag && players[i].set == false){
+//                        for(int q=0;q<type_num;q++)
+//                            System.out.println(temp[q]);
+//                        System.out.println(players[i].getname() + " : " + players[i].getchecked());
+                        players[i].setcritical(players[players[i].getchecked()].getbidPerNum()*players[i].gettype());
+                        //players[i].setcritical(winner.get(j).getbidPerNum()*players[i].gettype());
                         break;
                     }
                 }

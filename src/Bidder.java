@@ -1,9 +1,11 @@
 public class Bidder {
     private int bid,type;
-    private float bidPerNum,critical;
+    private float bidPerNum;
+    private float critical;
     private String[] bundle;
     private String name;
-    private boolean checked  = true;
+    private int checked  = -1;
+    public boolean set = false;
 
     public Bidder (String name){
         setname(name);
@@ -28,8 +30,8 @@ public class Bidder {
         this.bidPerNum = (float)bid / sum;
     }
 
-    public void setchecked(){
-        this.checked = false;
+    public void setchecked(int checked){
+        this.checked = checked;
     }
     public void setcritical(float critical){
         this.critical = critical;
@@ -51,7 +53,7 @@ public class Bidder {
         return this.bundle;
     }
 
-    public boolean getchecked() {
+    public int getchecked() {
         return this.checked;
     }
 
