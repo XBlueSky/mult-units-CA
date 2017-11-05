@@ -12,7 +12,7 @@ public class mult_unit_CA {
         int bidder_num,bid,type_num;
         String bundle;
         Bidder players[];
-        String totalBundle[],temp[];
+        String totalBundle[],temp[],tempBundle[];
         ArrayList<Bidder> winner = new ArrayList<Bidder>();
 
         //input
@@ -76,8 +76,8 @@ public class mult_unit_CA {
 
         Bidder.sort(players);
 
-        for(int i=0;i<players.length;i++)
-            System.out.println(players[i].getname()+" : "+players[i].getbidPerNum());
+//        for(int i=0;i<players.length;i++)
+  //          System.out.println(players[i].getname()+" : "+players[i].getbidPerNum());
 
         winner.add(Bidder.max(players));
         for(int i=0;i<type_num;i++)
@@ -95,9 +95,11 @@ public class mult_unit_CA {
 //
 //        for(int i=0;i<winner.size();i++)
 //            System.out.println(winner.get(i).getname());
-//        for(int i=0;i<type_num;i++)
-//            System.out.println(totalBundle[i]);
-//
+        tempBundle = new String[type_num];
+        for(int i=0;i<type_num;i++){
+            totalBundle[i] = temp[i];
+            tempBundle[i] = temp[i];
+        }
 //
         for(int i=0;i<players.length;i++){
             boolean flag = true;
@@ -110,11 +112,21 @@ public class mult_unit_CA {
                         if (players[q].getchecked() == -1 && !Bidder.disjointSet(players[q].getbundle(), temp)) {
 
                             if (flag) {
-                                players[i].setcritical(players[q].getbidPerNum() * players[i].gettype());
+                                for(int w=0;w<winner.size();w++){
+                                  if(!players[i].getname().equals(winner.get(w).getname()))
+                                    for(int b=0;b<type_num;b++)
+                                        totalBundle[b] = String.valueOf(Integer.parseInt(totalBundle[b]) - Integer.parseInt(winner.get(w).getbundle()[b]));
+                                }
+                                if(Bidder.disjointSet(players[q].getbundle(),totalBundle))
+                                    players[i].setcritical(players[q].getbidPerNum() * players[i].gettype());
+                               // else
+                              //      players[i].setcritical(0.0);
                                 players[q].setchecked(i);
-                                //System.out.println(players[q].getname() + " : " + players[i].getname());
+                                //System.out.println(players[i].getname() + " : " + players[i].getcritical()); 
                                 players[i].set = true;
                                 flag = false;
+                                for(int b=0;b<type_num;b++)
+                                    totalBundle[b] = tempBundle[b];
                             } else if(players[q].getchecked() == -1){
                                 players[q].setchecked(i);
                             }
